@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<html>
+    <head>
+        <title>Tugas 2</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <style>
+            body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            font-size: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+
+        .book-container {
+            background-color: #f7f7f7;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .book-info {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #0074cc;
+            color: #fff;
+            border: none;
+            padding: 10px 25px;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        button:hover {
+            background-color: #0052a7;
+        }
+    </style>
+    
+        <script>
+            function send() {
+                let urls = "http://localhost:8080/setBook";
+                let data = {"judul":"Kisah Pilu Vario Erupsi","penulis":"David Prastyawan","penerbit":"Moosee Publisher","tahun":"2023"};
+                let json = JSON.stringify(data);
+                $.ajax({
+                    url         : urls,
+                    data        : json,
+                    method      : 'POST',
+                    contentType : 'application/json',
+                    success     : function(result){
+                        alert(result);
+                    }
+                });
+            }
+
+            function get() {
+                let urls = "http://localhost:8080/getBook";
+                $.ajax({
+                    url: urls,
+                    method: 'GET',
+                    success: function (result) {
+                        const bookDiv = document.createElement("div");
+                        bookDiv.classList.add("book-container");
+                        bookDiv.innerHTML = `
+                            <p class="book-info">Judul: ${result.judul}</p>
+                            <p class="book-info">Penulis: ${result.penulis}</p>
+                            <p class="book-info">Penerbit: ${result.penerbit}</p>
+                            <p class="book-info">Tahun: ${result.tahun}</p>`;
+                        document.body.appendChild(bookDiv);
+                    },
+                    error: function (error) {
+                        alert("Data buku tidak ditemukan.");
+                    }
+                });
+            }
+        </script>
+    </head>
+    
+    <body>
+        <div class="container">PERPUSTAKAAN POLENG</div>
+        <button onclick="send()">Send ID</button>
+        <button onclick="get()">Get ID</button>
+    </body>
+</html>
+
